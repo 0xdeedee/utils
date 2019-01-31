@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <errno.h>
 
 
 #define DEFAULT_DEBUG_PORT 		( 50505 )
@@ -141,6 +140,8 @@ static __inline__ __attribute__((always_inline)) void __init_debug( __debug_cfg_
 		close( debug_ctx.__sock );
 		debug_ctx.__sock = -1;
 	}
+
+	debug_ctx.__initialized = 1;
 }
 
 static __inline__ __attribute__((always_inline)) void __debug( char *ds )

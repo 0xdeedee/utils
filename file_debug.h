@@ -10,7 +10,72 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <limits.h>
+
+
+#define DEFAULT_DEBUG_PORT 		( 50505 )
+#define DEFAULT_DEBUG_IP		( "127.0.0.1" )
+
+// debug everything
+#define DEFAULT_DEBUG_LEVEL		( 20 )
+
+#define SIZE_10K			( 1024 * 1024 )
+
+// 1 to enable feature 0 to disable 
+#define PID_ENABLED			( 1 << 0 )
+#define LINE_ENABLED			( 1 << 1 )
+#define FILE_ENABLED			( 1 << 2 )
+#define TIME_ENABLED			( 1 << 3 )
+#define LOG_LEVEL_ENABLED		( 1 << 4 )
+#define FUNCTION_ENABLED		( 1 << 5 )
+
+#define DEFAULT_DEBUG_MASK		( PID_ENABLED | LINE_ENABLED | FILE_ENABLED | TIME_ENABLED )
+
+#define MAX_DEBUG_LEVEL			( 40 )
+#define LogLevel_Info			( 0 )
+
+static char		debug_level_type_str[4][MAX_DEBUG_LEVEL] = 
+{
+	{ "ERR" },
+	{ "ERR" },
+	{ "ERR" },
+	{ "ERR" },
+	{ "ERR" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "WARNING" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+	{ "INFO" },
+};
 
 
 typedef struct __attribute__ ((__packed__)) __attribute__ ((aligned (16))) __debug_cfg
@@ -32,25 +97,10 @@ typedef struct __debug_ctx
 	unsigned int			__debug_file_size;
 } __debug_ctx_t;
 
-#define DEFAULT_DEBUG_TYPE		( DEBUG_TYPE_LOCAL )
 
 #define DEFAULT_DEBUG_FILE		( "default_debug.log" )
 
-#define DEFAULT_DEBUG_LEVEL		( 20 )
 
-#define SIZE_1K				( 1024 * 1024 )
-#define SIZE_1M				( 1024 * SIZE_1K )
-#define SIZE_20M			( 20 * SIZE_1M )
-
-
-#define PID_ENABLED			( 1 << 0 )
-#define LINE_ENABLED			( 1 << 1 )
-#define FILE_ENABLED			( 1 << 2 )
-#define TIME_ENABLED			( 1 << 3 )
-
-#define DEFAULT_DEBUG_MASK		( PID_ENABLED | LINE_ENABLED | FILE_ENABLED | TIME_ENABLED )
-
-#define LogLevel_Info			( 0 )
 
 __debug_ctx_t				debug_ctx;
 
@@ -95,34 +145,14 @@ static __inline__ void __debug( char *ds )
 		fputs( ds, debug_ctx.fp );
 }
 
-#ifdef __DEBUG_ENABLED__
-
-#define init_debug( DBG_GONFIG ) { __init_debug( DBG_GONFIG ); }
-
-#define stop_debug() { __stop_debug(); }
-
-#define debug( debug_level, args ... ) {												\
-	if ( 0 == debug_ctx.__initialized ) { __init_debug( NULL ); }									\
-	if ( debug_ctx.__debug_level >= debug_level ) {											\
-		char	ds[1024]; unsigned int pos = 0;											\
-		if ( debug_ctx.__debug_mask & TIME_ENABLED ) { 										\
-			struct timeval tv; gettimeofday( &tv, NULL ); time_t t = tv.tv_sec; char *time_str = ctime( ( time_t * ) &t );	\
-			time_str[strlen( time_str ) - 6] = 0; pos += sprintf( ds + pos, "[%s.%d]--", time_str, ( int )tv.tv_usec);	\
-		}															\
-		if ( debug_ctx.__debug_mask & FILE_ENABLED ) { pos += sprintf( ds + pos, "[%s]", __FILE__ ); }				\
-		if ( debug_ctx.__debug_mask & LINE_ENABLED ) { pos += sprintf( ds + pos, "[%d]", __LINE__ ); }				\
-		if ( debug_ctx.__debug_mask & PID_ENABLED )  { pos += sprintf( ds + pos, "[%d]", getpid() ); }				\
-		pos += sprintf( ds + pos, "%s():", __FUNCTION__);									\
-		sprintf( ds + pos, ##args ); strcat(ds, "\n");										\
-		__debug( ds );														\
-	}																\
+static __inline__ __attribute__((always_inline)) void __stop_debug()
+{
+	close( debug_ctx.__sock );
+	debug_ctx.__sock = -1;
+	debug_ctx.__initialized = 0;
 }
-#else
-#define init_debug( DBG_GONFIG ) {	}
-#define debug( debug_level, args ... ){	}
-#define stop_debug() { }
-#endif
 
+#include "debug_macro.h"
 
 #endif // __DEBUG_H__
 

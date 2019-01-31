@@ -104,7 +104,7 @@ typedef struct __debug_ctx
 
 __debug_ctx_t				debug_ctx;
 
-static __inline__ void __init_debug( __debug_cfg_t *__in_debug_cfg )
+static __inline__ __attribute__((always_inline)) void __init_debug( __debug_cfg_t *__in_debug_cfg )
 {
 	char			__debug_filename[PATH_MAX - 11];
 
@@ -139,7 +139,7 @@ static __inline__ void __init_debug( __debug_cfg_t *__in_debug_cfg )
 	debug_ctx.__initialized = 1;
 }
 
-static __inline__ void __debug( char *ds )
+static __inline__ __attribute__((always_inline)) void __debug( char *ds )
 {
 	if ( NULL == debug_ctx.fp )
 		fputs( ds, debug_ctx.fp );

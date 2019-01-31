@@ -1,6 +1,8 @@
 #ifndef __NET_DEBUG_H__
 #define __NET_DEBUG_H__
 
+#ifdef __DEBUG_ENABLED__
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -32,51 +34,6 @@
 
 #define MAX_DEBUG_LEVEL			( 40 )
 #define LogLevel_Info			( 0 )
-
-static char		debug_level_type_str[4][MAX_DEBUG_LEVEL] = 
-{
-	{ "ERR" },
-	{ "ERR" },
-	{ "ERR" },
-	{ "ERR" },
-	{ "ERR" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "WARNING" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-	{ "INFO" },
-};
-
 
 typedef struct __attribute__ ((__packed__)) __attribute__ ((aligned (16))) __debug_cfg
 {
@@ -164,6 +121,8 @@ static __inline__ __attribute__((always_inline)) void __stop_debug()
 	debug_ctx.__sock = -1;
 	debug_ctx.__initialized = 0;
 }
+
+#endif // __DEBUG_ENABLED__
 
 #include "debug_macro.h"
 

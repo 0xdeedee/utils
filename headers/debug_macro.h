@@ -3,6 +3,19 @@
 
 #ifdef __DEBUG_ENABLED__
 
+static char             debug_level_type_str[4][MAX_DEBUG_LEVEL] =
+{
+	{ "ERR" },	{ "ERR" },	{ "ERR" },	{ "ERR" },	{ "ERR" },
+	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },
+	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },
+	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },	{ "WARNING" },
+	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },
+	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },
+	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },
+	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },	{ "INFO" },
+};
+
+
 #define init_debug( DBG_GONFIG ) { __init_debug( DBG_GONFIG ); }
 
 #define stop_debug() { __stop_debug(); }

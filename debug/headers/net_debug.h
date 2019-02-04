@@ -43,7 +43,7 @@ typedef struct __attribute__ ((__packed__)) __attribute__ ((aligned (16))) __deb
 	unsigned char			__debug_mask:5;
 } __debug_cfg_t;
 
-typedef struct __debug_ctx
+typedef struct __attribute__ ((__packed__)) __attribute__ ((aligned (16))) __debug_ctx
 {
 	unsigned int			__initialized:1;
 	int				__sock;

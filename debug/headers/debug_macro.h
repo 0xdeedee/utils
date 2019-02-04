@@ -20,7 +20,7 @@ static char             debug_level_type_str[4][MAX_DEBUG_LEVEL] =
 
 #define stop_debug() { __stop_debug(); }
 
-#define debug( debug_level, args ... ) {													\
+#define debug( debug_level, args ... ) {														\
 	if ( 0 == debug_ctx.initialized ) { __init_debug( NULL ); }											\
 	if ( debug_ctx.__debug_level >= debug_level ) {													\
 		char    ds[1024]; unsigned int pos = 0;													\

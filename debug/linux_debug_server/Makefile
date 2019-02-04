@@ -5,7 +5,7 @@ TARGET=debug_server
 
 CC=gcc
 DEPS=
-CFLAGS= -Wall -O3
+CFLAGS= -Wall -O3 -Wformat-truncation=0
 INCLUDE= -I../../lists
 OBJ:=$(patsubst %.c,%.o,$(wildcard *.c))
 

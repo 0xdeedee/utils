@@ -177,7 +177,8 @@ void *write_to_file( void *input_data )
 	}
 
 	list_init( &__input_data->head );
-	printf( "Thread %ld receiving datagrams from %s on port %d...\n", __input_data->tid, __input_data->app_name, __input_data->port_no );
+	printf( "Thread %ld receiving datagrams from %s on port %d...\n", 
+			__input_data->tid, __input_data->app_name, __input_data->port_no );
 	while ( 1 )
 	{
 		memset( b, 0, bsz );
@@ -213,7 +214,6 @@ void *write_to_file( void *input_data )
 
 static void start_cli( thread_data_t *cfg, unsigned int cfg_sz )
 {
-
 }
 
 
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 	memset( cfg, 0, sizeof( cfg ) );
 	strcat( cfg[0].storage_dir, "./" );
 	strcat( cfg[0].app_name, "app");
-	cfg[0].port_no = 4567;
+	cfg[0].port_no = 5005;
 	cfg[0].tid = 0;
 	cfg[0].exit = 0;
 	
@@ -237,6 +237,7 @@ int main(int argc, char **argv)
 	}
 
 	start_cli( cfg, sizeof( cfg ) / sizeof( cfg[0] ) );
+	while( 1 ) { sleep( 5 ); }
 	return 0;
 }
 
